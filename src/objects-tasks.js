@@ -93,8 +93,8 @@ function compareObjects(obj1, obj2) {
  *    isEmptyObject({}) => true
  *    isEmptyObject({a: 1}) => false
  */
-function isEmptyObject(/* obj */) {
-  throw new Error('Not implemented');
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
 }
 
 /**
@@ -136,18 +136,15 @@ function makeImmutable(/* obj */) {
 // }
 function makeWord(lettersObject) {
   const res = [];
-  function fillWord(keys, index) {
-    if (index === keys.length) {
-      return res.join('');
-    }
-    const letter = keys[index];
+  const keys = Object.keys(lettersObject);
+  for (let i = 0; i < keys.length; i += 1) {
+    const letter = keys[i];
     const positions = lettersObject[letter];
     positions.forEach((pos) => {
       res[pos] = letter;
     });
-    return fillWord(keys, index + 1);
   }
-  return fillWord(Object.keys(lettersObject), 0);
+  return res.join('');
 }
 
 /**
