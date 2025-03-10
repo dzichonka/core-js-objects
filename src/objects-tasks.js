@@ -75,8 +75,11 @@ function removeProperties(obj, keys) {
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 2}) => true
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 3}) => false
  */
-function compareObjects(/* obj1, obj2 */) {
-  throw new Error('Not implemented');
+function compareObjects(obj1, obj2) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  if (keys1.length !== keys2.length) return false;
+  return keys1.every((key) => obj1[key] === obj2[key]);
 }
 
 /**
@@ -124,8 +127,27 @@ function makeImmutable(/* obj */) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+// function makeWord(lettersObject) {
+//   let result = [];
+//   for (let letter in lettersObject) {
+//     lettersObject[letter].forEach((pos) => (result[pos] = letter));
+//   }
+//   return result.join('');
+// }
+function makeWord(lettersObject) {
+  const res = [];
+  function fillWord(keys, index) {
+    if (index === keys.length) {
+      return res.join('');
+    }
+    const letter = keys[index];
+    const positions = lettersObject[letter];
+    positions.forEach((pos) => {
+      res[pos] = letter;
+    });
+    return fillWord(keys, index + 1);
+  }
+  return fillWord(Object.keys(lettersObject), 0);
 }
 
 /**
